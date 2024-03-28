@@ -860,7 +860,7 @@ final class JiraInstanceManagerRest {
         log.info("\t\tSet admin account successfully")
 
 
-        log.info("\tSetting up email")
+        log.info("\tSetting up email. Timeout 4 * 60000")
         String setupEmailUrl = "/secure/SetupMailNotifications.jspa"
 
 
@@ -868,6 +868,7 @@ final class JiraInstanceManagerRest {
                 .cookie(cookies)
                 .field("noemail", "true")
                 .field("atl_token", cookies.find { it.name == "atlassian.xsrf.token" }.value)
+                .connectTimeout(4 * 60000)
                 .asString()
 
         assert setupEmailResponse.status == 302, "Error setting up email"
